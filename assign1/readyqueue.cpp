@@ -12,6 +12,8 @@ using namespace std;
  */
  ReadyQueue::ReadyQueue()  {
      //TODO: add your code here
+     head = nullptr;
+     count = 0;
  }
 
 /**
@@ -19,6 +21,11 @@ using namespace std;
 */
 ReadyQueue::~ReadyQueue() {
     //TODO: add your code to release dynamically allocate memory
+    while(head != nullptr) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+    }
 }
 
 /**
@@ -28,7 +35,25 @@ ReadyQueue::~ReadyQueue() {
  */
 void ReadyQueue::addPCB(PCB *pcbPtr) {
     //TODO: add your code here
+
     // When adding a PCB to the queue, you must change its state to READY.
+    Node* newNode = new Node(pcbPtr);
+    newNode->pcb->setState(ProcState::READY);
+
+    // Check if queue is empty or if the head is less important than the pcb added
+    if (count == 0 || pcbPtr->priority >= head->pcb->priority) {
+        newNode->next = head;
+        head = newNode;
+    } else {
+        Node* current = head;
+        // Find the next spot in queue for PCB
+        while(current->next != nullptr && pcbPtr->priority <= current->next->pcb->priority) {
+            current = current->next;
+        }
+        newNode->next = current->next;
+        current->next = newNode;
+    }
+    count++;
 }
 
 /**
@@ -39,6 +64,31 @@ void ReadyQueue::addPCB(PCB *pcbPtr) {
 PCB* ReadyQueue::removePCB() {
     //TODO: add your code here
     // When removing a PCB from the queue, you must change its state to RUNNING.
+
+    // If empty queue return nullpter
+    if(count == 0) {
+
+        return nullptr;
+
+    } else {
+
+        // Remove the head node, has highest priority
+        Node* removedNode = head;
+        head = head->next;
+        count--;
+
+        // Save a pointer to the PCB to return
+        PCB* removedPCB = removedNode->pcb;
+
+        // Set state to RUNNING
+        removedPCB->setState(ProcState::RUNNING);
+
+        // Delete node that was removed
+        delete removedNode;
+
+        // Return pointer to PCB
+        return removedPCB;
+    }
 }
 
 /**
@@ -48,6 +98,7 @@ PCB* ReadyQueue::removePCB() {
  */
 int ReadyQueue::size() {
     //TODO: add your code here
+    return count;
 }
 
 /**
@@ -55,4 +106,18 @@ int ReadyQueue::size() {
  */
 void ReadyQueue::displayAll() {
     //TODO: add your code here
+
+    // If queue is empty
+    if (count == 0) {
+        cout << "Empty Queue\n";
+
+    } else {
+
+        // Point to first node and display each until the end
+        Node* current = head;
+        while(current != nullptr) {
+            current->pcb->display();
+            current = current->next;
+        }
+    }
 }

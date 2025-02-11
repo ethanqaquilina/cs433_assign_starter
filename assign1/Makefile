@@ -2,7 +2,7 @@
 # OS COURSE - CS 433 example
 # 
 ###################################
-CC = g++			# use g++ for compiling c++ code or gcc for c code
+CC = g++				# use g++ for compiling c++ code or gcc for c code
 CFLAGS = -g -Wall -std=c++17		# compilation flags: -g for debugging. Change to -O2 or -O3 for optimized code.
 LIB = -lm			# linked libraries	
 LDFLAGS = -L.			# link flags
