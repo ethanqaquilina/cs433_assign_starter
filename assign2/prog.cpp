@@ -2,7 +2,7 @@
 /**
  * Assignment 2: Simple UNIX Shell
  * @file pcbtable.h
- * @author ??? (TODO: your name)
+ * @author Ethan Aquilina (TODO: your name)
  * @brief This is the main function of a simple UNIX Shell. You may add additional functions in this file for your implementation
  * @version 0.1
  */
@@ -31,6 +31,20 @@ using namespace std;
 int parse_command(char command[], char *args[])
 {
     // TODO: implement this function
+    int count = 0;
+    char *pointer = strtok (command," ");
+
+    while (pointer != NULL)
+    {
+        args[count] = pointer;
+        count++;
+        pointer = strtok (NULL, " ");
+
+    }
+    args[count] = NULL;
+    return count;
+
+
 }
 
 // TODO: Add additional functions if you need
@@ -65,6 +79,8 @@ int main(int argc, char *argv[])
          * (2) the child process will invoke execvp()
          * (3) parent will invoke wait() unless command included &
          */
+
+         
     }
     return 0;
 }
