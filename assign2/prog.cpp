@@ -32,14 +32,13 @@ int parse_command(char command[], char *args[])
 {
     // TODO: implement this function
     int count = 0;
-    char *pointer = strtok (command," ");
+    char *pointer = strtok(command, " ");
 
     while (pointer != NULL)
     {
         args[count] = pointer;
         count++;
-        pointer = strtok (NULL, " ");
-
+        pointer = strtok(NULL, " ");
     }
     args[count] = NULL;
     return count;
@@ -65,10 +64,23 @@ int main(int argc, char *argv[])
     {
         printf("osh>");
         fflush(stdout);
+
         // Read the input command
         fgets(command, MAX_LINE, stdin);
+        command[strcspn(command, "\n")] = '\0';
+
+        // Check if command should run in the background
+        bool background = false;
+        if (strcspn(command, "&") != -1)
+        {
+            background = true;
+            command[strcspn(command, "&")] = '\0'; // Remove "&" from args
+        }
+
         // Parse the input command
         int num_args = parse_command(command, args);
+        if (num_args == 0)
+            continue; // Ignore empty input
 
         // TODO: Add your code for the implementation
         /**
@@ -78,7 +90,46 @@ int main(int argc, char *argv[])
          * (3) parent will invoke wait() unless command included &
          */
 
-         
+        // Check for "exit" command
+        if (strcmp(args[0], "exit") == 0)
+        {
+            should_run = 0;
+            continue;
+        }
+
+        if (should_run)
+        {
+            // Create Child Process
+            pid_t pid = fork();
+
+            // Check if error occured
+            if (pid < 0)
+            {
+                perror("Forked Failed");
+                return 1;
+            }
+            else if (pid == 0)
+            { // Child Runs
+                // Invoke execvp
+                if (execvp(args[0], args) == -1)
+                {
+                    perror("Command not found");
+                    exit(1);
+                }
+            }
+            else
+            { // Parent runs
+                if (!background)
+                {
+                    wait(NULL);
+                    printf("Child Complete");
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
     }
     return 0;
 }
