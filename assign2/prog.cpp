@@ -43,8 +43,6 @@ int parse_command(char command[], char *args[])
     }
     args[count] = NULL;
     return count;
-
-
 }
 
 // TODO: Add additional functions if you need
