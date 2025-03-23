@@ -1,21 +1,27 @@
 /**
-* Assignment 3: CPU Scheduler
+ * Assignment 3: CPU Scheduler
  * @file scheduler_rr.h
- * @author ??? (TODO: your name)
+ * @author Ethan Aquilina (TODO: your name)
  * @brief This Scheduler class implements the RoundRobin (RR) scheduling algorithm.
  * @version 0.1
  */
-//You must complete the all parts marked as "TODO". Delete "TODO" after you are done.
-// Remember to add sufficient and clear comments to your code
+// You must complete the all parts marked as "TODO". Delete "TODO" after you are done.
+//  Remember to add sufficient and clear comments to your code
 
 #ifndef ASSIGN3_SCHEDULER_RR_H
 #define ASSIGN3_SCHEDULER_RR_H
 
 #include "scheduler.h"
+#include <queue>
 
-class SchedulerRR : public Scheduler {
+class SchedulerRR : public Scheduler
+{
 private:
     // TODO: add necessary member variables here for your implementation
+    int time_quantum;
+    std::queue<PCB> ready_queue;
+    std::vector<PCB> completed_processes;
+    std::vector<PCB> original_processes;
 
 public:
     /**
@@ -33,7 +39,7 @@ public:
      *        It is used to initialize the scheduler.
      * @param process_list The list of processes in the simulation.
      */
-    void init(std::vector<PCB>& process_list) override;
+    void init(std::vector<PCB> &process_list) override;
 
     /**
      * @brief This function is called once after the simulation ends.
@@ -48,5 +54,4 @@ public:
     void simulate() override;
 };
 
-
-#endif //ASSIGN3_SCHEDULER_RR_H
+#endif // ASSIGN3_SCHEDULER_RR_H

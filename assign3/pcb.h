@@ -40,6 +40,8 @@ public:
     unsigned int turnaround_time;
     // The waiting time for the process
     unsigned int waiting_time;
+    // The original burst time
+    unsigned int og_BT;
 
     /**
      * @brief Construct a new PCB object
@@ -56,6 +58,7 @@ public:
         this->start_time = 0;
         this->turnaround_time = 0;
         this->waiting_time = 0;
+        this->og_BT = 0;
     }
 
     /**

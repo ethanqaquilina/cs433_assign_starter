@@ -21,8 +21,8 @@ private:
     // TODO: add necessary member variables here for your implementation
     std::queue<PCB> ready_queue; ///< Queue to hold processes in arrival order
     std::vector<PCB> completed_processes; ///< Stores completed processes for results
-    float avg_turnaroundtime;
-    float avg_waitingtime;
+    float avg_turnaroundtime = 0;
+    float avg_waitingtime = 0;
 
 public:
     /**

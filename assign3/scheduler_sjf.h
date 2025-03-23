@@ -1,7 +1,7 @@
 /**
 * Assignment 3: CPU Scheduler
- * @file scheduler_fcfs.h
- * @author ??? (TODO: your name)
+ * @file scheduler_sjf.h
+ * @author Ethan Aquilina (TODO: your name)
  * @brief This Scheduler class implements the SJF scheduling algorithm.
  * @version 0.1
  */
@@ -12,10 +12,18 @@
 #define ASSIGN3_SCHEDULER_SJF_H
 
 #include "scheduler.h"
+#include <queue>
+#include <functional>
 
 class SchedulerSJF : public Scheduler {
 private:
     // TODO: add necessary member variables here for your implementation
+    // Priority queue to hold processes, ordered by burst time (shortest burst time has highest priority)
+    std::priority_queue<PCB, std::vector<PCB>, std::function<bool(PCB, PCB)>> ready_queue;
+    std::vector<PCB> completed_processes; ///< Stores completed processes for results
+    std::vector<PCB> original_processes;
+    float avg_turnaroundtime = 0;
+    float avg_waitingtime = 0;
 
 public:
     /**
